@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LegalCategory } from '../types/legal';
+import { LegalCategory } from '../../types/legal';
 import { ChatMessage } from './ChatMessage';
-import { CategorySelector } from './CategorySelector';
-import { CategoryForm } from './CategoryForm';
-import { useChat } from '../hooks/useChat';
-import { TypingAnimation } from './TypingAnimation';
+import { CategorySelector } from '../CategorySelector';
+import { CategoryForm } from '../forms/CategoryForm';
+import { useChat } from '../../hooks/useChat';
+import { TypingAnimation } from '../TypingAnimation';
 
 export const ChatContainer = () => {
   const { messages, isLoading, sendRequest, resetMessages } = useChat();

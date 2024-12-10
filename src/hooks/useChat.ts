@@ -8,11 +8,11 @@ export function useChat() {
     {
       id: 'welcome',
       isBot: true,
-      text: 'שלום! אני עוזר משפטי מבוסס AI. אנא בחר קטגוריה להתחיל.',
+      text: 'שלום! אני עוזר משפטי מבוסס . אנא בחר קטגוריה להתחיל.',
       timestamp: Date.now(),
     },
   ]);
- 
+
   const addMessage = (message: Omit<Message, 'id' | 'timestamp'>) => {
     setMessages((prev) => [
       ...prev,
@@ -25,14 +25,13 @@ export function useChat() {
   };
 
   const resetMessages = () => {
-    // Completely clear all previous messages and only add the welcome message
     setMessages([
       {
         id: 'welcome',
         isBot: true,
         text: 'שלום! אני עוזר משפטי מבוסס AI. אנא בחר קטגוריה להתחיל.',
         timestamp: Date.now(),
-        category: undefined, 
+        category: undefined,
       },
     ]);
   };
@@ -43,8 +42,6 @@ export function useChat() {
     sourceUrl?: string
   ) => {
     if (isLoading) return;
-
-   
 
     const userMessage = Object.entries(details)
       .map(([key, value]) => `${key}: ${value}`)
@@ -57,13 +54,12 @@ export function useChat() {
     });
 
     setIsLoading(true);
-
     try {
-      const response = await geminiService.getLegalResponse({
+      const response = await geminiService.generateResponse(
         category,
         details,
-        sourceUrl,
-      });
+        sourceUrl
+      );
 
       addMessage({
         isBot: true,
@@ -73,6 +69,7 @@ export function useChat() {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'שגיאה בלתי צפויה התרחשה';
+
       addMessage({
         isBot: true,
         text: `מצטער, לא הצלחתי לקבל תשובה. ${errorMessage}. אנא נסה שוב מאוחר יותר.`,

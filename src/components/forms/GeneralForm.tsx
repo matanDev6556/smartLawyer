@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 interface GeneralFormProps {
   fields: string[];
-  onSubmit: (details: Record<string, string>, sourceUrl?: string) => void;
+  onSubmit: (details: Record<string, string>) => void;
   isLoading: boolean;
 }
 
 export function GeneralForm({ fields, onSubmit, isLoading }: GeneralFormProps) {
   const [details, setDetails] = useState<Record<string, string>>({});
-  const [sourceUrl, setSourceUrl] = useState('');
 
   useEffect(() => {
     setDetails({}); // איפוס השדות
@@ -17,7 +16,7 @@ export function GeneralForm({ fields, onSubmit, isLoading }: GeneralFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isLoading) return;
-    onSubmit(details, sourceUrl || undefined);
+    onSubmit(details);
   };
 
   const handleInputChange = (field: string, value: string) => {
