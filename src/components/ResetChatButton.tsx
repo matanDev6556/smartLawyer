@@ -1,4 +1,4 @@
-import {  RefreshCcw } from 'lucide-react';
+import { RefreshCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface NewChatButtonProps {
@@ -18,4 +18,3 @@ export const NewChatButton: React.FC<NewChatButtonProps> = ({ onClick }) => {
     </motion.button>
   );
 };
-
