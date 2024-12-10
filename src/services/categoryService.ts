@@ -5,20 +5,16 @@ class CategoryService {
   getCategories(): LegalCategoryInfo[] {
     return LEGAL_CATEGORIES;
   }
-
   getCategoryById(id: LegalCategory): LegalCategoryInfo | undefined {
-    return LEGAL_CATEGORIES.find((category) => category.id === id);
+    return LEGAL_CATEGORIES.find((category: LegalCategoryInfo) => category.id === id);
   }
 
-  validateCategoryInput(
-    category: LegalCategory,
-    details: Record<string, string>
-  ): boolean {
+  validateCategoryInput(category: LegalCategory, details: Record<string, string>): boolean {
     const categoryInfo = this.getCategoryById(category);
     if (!categoryInfo) return false;
 
-    return categoryInfo.requiredFields.every(
-      (field) => details[field] && details[field].trim().length > 0
+    return categoryInfo.requiredFields.every((field: string) => 
+      details[field] && details[field].trim().length > 0
     );
   }
 }

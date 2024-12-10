@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Header } from './components/Header';
-import { ChatContainer } from './components/ChatContainer';
-import { NewChatButton } from './components/NewChatButton';
+import { ChatContainer } from './components/chat/ChatContainer';
+import { NewChatButton } from './components/ResetChatButton';
 import { HelpfulTip } from './components/HelpfulTip';
-import { SkipToContent } from './components/SkipToContent';
+
 import { motion } from 'framer-motion';
 import { GlobalStyle } from './config/global_style';
 import { TextSizeControls } from './components/TextySizeController';
@@ -24,7 +24,6 @@ function App() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <SkipToContent />
         <div className="max-w-6xl mx-auto px-4 py-8">
           <TextSizeControls />
           <Header />

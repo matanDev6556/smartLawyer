@@ -1,5 +1,5 @@
-import { LegalCategory } from '../types/legal';
-import { categoryService } from '../services/categoryService';
+import { LegalCategory } from '../../types/legal';
+import { categoryService } from '../../services/categoryService';
 import { GeneralForm } from './GeneralForm';
 
 interface CategoryFormProps {
