@@ -4,6 +4,7 @@ import { LegalCategory } from '../../types/legal';
 import { Badge } from '@/components/ui/badge';
 import React, { useState } from 'react';
 import { FiClipboard, FiCheck } from 'react-icons/fi'; // אייקונים מ-react-icons
+import { Volume2, VolumeX } from 'lucide-react';
 
 interface ChatMessageProps {
   isBot: boolean;
@@ -26,12 +27,32 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   category,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000); // משוב זמני
     });
+  };
+
+  const toggleSpeech = () => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    } else {
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.lang = 'he-IL';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true);
+
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+    }
   };
 
   return (
@@ -87,6 +108,23 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
               )}
             </button>
           )}
+
+          {/* כפתור הקראה */}
+          <button
+            onClick={toggleSpeech}
+            className={`absolute bottom-0 ${
+              isBot ? 'right-2' : 'left-2'
+            } flex items-center justify-center w-6 h-6 ${
+              isBot ? 'bg-gray-200' : 'bg-white/20'
+            } rounded-md hover:bg-gray-300 focus:outline-none`}
+            aria-label={isSpeaking ? 'עצור הקראה' : 'התחל הקראה'}
+          >
+            {isSpeaking ? (
+              <VolumeX className="w-4 h-4 text-gray-600" />
+            ) : (
+              <Volume2 className="w-4 h-4 text-gray-600" />
+            )}
+          </button>
         </div>
       </div>
     </motion.div>

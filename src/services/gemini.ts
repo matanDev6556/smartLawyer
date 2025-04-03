@@ -19,6 +19,7 @@ export class GeminiService implements IAIService {
     config?: GenerationConfig
   ) {
     const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+    console.log('API Key:', import.meta.env.VITE_GEMINI_API_KEY);
 
     this.config = config || {
       temperature: 0.7,
@@ -28,7 +29,7 @@ export class GeminiService implements IAIService {
     };
 
     this.model = genAI.getGenerativeModel({
-      model: 'gemini-pro',
+      model: 'gemini-1.5-pro',
       generationConfig: this.config,
     });
 

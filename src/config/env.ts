@@ -2,6 +2,8 @@ interface EnvConfig {
   GEMINI_API_KEY: string;
 }
 
+
+
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY || GEMINI_API_KEY.trim() === '') {
