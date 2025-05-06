@@ -1,37 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { speechService } from '@/services/speechService';
 
 export function TextToSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [speechSynthesis, setSpeechSynthesis] =
-    useState<SpeechSynthesis | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setSpeechSynthesis(window.speechSynthesis);
-    }
+    // עדכון מצב ההקראה כאשר הוא משתנה בשירות
+    const checkSpeakingState = () => {
+      setIsSpeaking(speechService.isCurrentlySpeaking());
+    };
+
+    const interval = setInterval(checkSpeakingState, 100);
+    return () => clearInterval(interval);
   }, []);
 
   const toggleSpeech = () => {
-    if (!speechSynthesis) return;
-
-    if (isSpeaking) {
-      speechSynthesis.cancel();
-      setIsSpeaking(false);
-    } else {
-      const text = document.body.innerText;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'he-IL'; // הגדרת שפה לעברית
-      utterance.rate = 1.0; // מהירות הקראה רגילה
-      utterance.pitch = 1.0; // גובה קול רגיל
-
-      speechSynthesis.speak(utterance);
-      setIsSpeaking(true);
-
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
-    }
+    const text = document.body.innerText;
+    speechService.speak(text);
   };
 
   return (
