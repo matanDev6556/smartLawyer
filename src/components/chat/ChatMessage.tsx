@@ -2,9 +2,10 @@ import { motion } from 'framer-motion';
 import { Avatar } from '@/components/ui/avatar';
 import { LegalCategory } from '../../types/legal';
 import { Badge } from '@/components/ui/badge';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiClipboard, FiCheck } from 'react-icons/fi'; // אייקונים מ-react-icons
 import { Volume2, VolumeX } from 'lucide-react';
+import { speechService } from '@/services/speechService';
 
 interface ChatMessageProps {
   isBot: boolean;
@@ -29,6 +30,16 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   const [copied, setCopied] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
+  useEffect(() => {
+    // עדכון מצב ההקראה כאשר הוא משתנה בשירות
+    const checkSpeakingState = () => {
+      setIsSpeaking(speechService.isCurrentlySpeaking());
+    };
+
+    const interval = setInterval(checkSpeakingState, 100);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(message).then(() => {
       setCopied(true);
@@ -37,22 +48,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   };
 
   const toggleSpeech = () => {
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-    } else {
-      const utterance = new SpeechSynthesisUtterance(message);
-      utterance.lang = 'he-IL';
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-
-      window.speechSynthesis.speak(utterance);
-      setIsSpeaking(true);
-
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
-    }
+    speechService.speak(message);
   };
 
   return (
