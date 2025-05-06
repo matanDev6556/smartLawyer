@@ -17,7 +17,6 @@ export const ChatContainer = () => {
   }, [messages]);
 
   useEffect(() => {
-    // Reset messages when the component is mounted (new chat)
     resetMessages();
   }, []);
 
@@ -38,23 +37,14 @@ export const ChatContainer = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 mb-4 max-w-full mx-auto w-full">
+    <div className="flex flex-col h-full bg-gradient-to-r from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 mb-4 max-w-full mx-auto w-full">
       <CategorySelector
         onSelect={handleCategorySelect}
         selectedCategory={selectedCategory}
       />
 
-      {selectedCategory && (
-        <CategoryForm
-          key={selectedCategory}
-          category={selectedCategory}
-          onSubmit={handleCategorySubmit}
-          isLoading={isLoading}
-        />
-      )}
-
       <div
-        className="space-y-4 mb-4 max-h-[60vh] overflow-y-auto mt-6 pr-4 w-full"
+        className="flex-1 space-y-4 mb-4 overflow-y-auto mt-6 pr-4 w-full"
         role="list"
         aria-label="Chat messages"
       >
@@ -94,6 +84,17 @@ export const ChatContainer = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
+
+      {selectedCategory && (
+        <div className="sticky bottom-0 bg-gradient-to-r from-blue-50 to-indigo-100 pt-4 border-t border-gray-200">
+          <CategoryForm
+            key={selectedCategory}
+            category={selectedCategory}
+            onSubmit={handleCategorySubmit}
+            isLoading={isLoading}
+          />
+        </div>
+      )}
     </div>
   );
 };

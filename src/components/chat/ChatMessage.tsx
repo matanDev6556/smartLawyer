@@ -66,21 +66,23 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <Avatar
           className={`w-10 h-10 ${
             isBot ? 'bg-blue-500' : 'bg-green-500'
-          } flex items-center justify-center text-white font-bold`}
+          } flex items-center justify-center text-white font-bold shrink-0`}
         >
           <span className="sr-only">{isBot ? 'תשובת AI' : 'הודעה שלך'}</span>
           {isBot ? 'AI' : 'את/ה'}
         </Avatar>
         <div
-          className={`relative max-w-md p-4 rounded-lg ${
+          className={`relative p-4 rounded-lg ${
             isBot
               ? 'bg-white text-gray-800 shadow-md'
               : 'bg-blue-500 text-white'
-          }`}
+          } min-w-[200px] max-w-[80%]`}
           role="article"
           aria-label={isBot ? 'תשובת AI' : 'ההודעה שלך'}
         >
-          <p className="text-sm mb-2">{formatMessage(message)}</p>
+          <p className="text-sm mb-2 whitespace-pre-wrap break-words">
+            {formatMessage(message)}
+          </p>
           {category && (
             <Badge
               variant="secondary"
